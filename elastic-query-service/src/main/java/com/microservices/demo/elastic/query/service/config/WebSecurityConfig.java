@@ -42,6 +42,7 @@ public class WebSecurityConfig {
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
+                .csrf(AbstractHttpConfigurer::disable)//otherwise POST is not allowed
                 .authorizeHttpRequests(authorizeHttpRequest -> authorizeHttpRequest
                 .requestMatchers("/**").authenticated().anyRequest().hasRole("USER"))
                 .formLogin(Customizer.withDefaults())
