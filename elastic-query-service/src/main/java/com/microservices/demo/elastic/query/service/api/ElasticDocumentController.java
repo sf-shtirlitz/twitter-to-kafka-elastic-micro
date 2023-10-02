@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +29,9 @@ public class ElasticDocumentController {
     public ElasticDocumentController(ElasticQueryService queryService) {
         this.elasticQueryService = queryService;
     }
+
+    @Value("${server.port}")
+    private String port;
 
     @Operation(summary = "Get all elastic documents.")
     @ApiResponses(value = {
@@ -103,7 +107,7 @@ public class ElasticDocumentController {
     getDocumentByText(@RequestBody @Valid ElasticQueryServiceRequestModel elasticQueryServiceRequestModel) {
         List<ElasticQueryServiceResponseModel> response =
                 elasticQueryService.getDocumentByText(elasticQueryServiceRequestModel.getText());
-        LOG.info("Elasticsearch returned {} of documents", response.size());
+        LOG.info("Elasticsearch returned {} of documents on port {}", response.size(), port);
         return ResponseEntity.ok(response);
     }
 

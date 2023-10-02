@@ -1,21 +1,34 @@
 package com.microservices.demo.elastic.query.web.client.config;
 
+import com.microservices.demo.config.UserConfigData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
-import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
+/*import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
-import org.springframework.security.oauth2.core.oidc.user.OidcUserAuthority;
+import org.springframework.security.oauth2.core.oidc.user.OidcUserAuthority;*/
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -26,7 +39,65 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration
 public class WebSecurityConfig {
 
-    private static final Logger LOG = LoggerFactory.getLogger(WebSecurityConfig.class);
+    private final UserConfigData userConfigData;
+
+    public WebSecurityConfig(UserConfigData userData) {
+        this.userConfigData = userData;
+    }
+
+    @Bean
+    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity
+//                .csrf(AbstractHttpConfigurer::disable)//otherwise POST is not allowed
+                .authorizeHttpRequests(authorizeHttpRequest -> authorizeHttpRequest
+                        .requestMatchers("/").permitAll()
+                        .requestMatchers("/**").fullyAuthenticated().anyRequest().hasRole("USER")
+                )
+                .formLogin(Customizer.withDefaults())
+                .httpBasic(Customizer.withDefaults());
+
+        return httpSecurity.build();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return NoOpPasswordEncoder.getInstance();
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("*"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
+    @Bean
+    public InMemoryUserDetailsManager userDetailsService() {
+        /*Approach 2 where we use NoOpPasswordEncoder Bean
+		while creating the user details*/
+        UserDetails admin = User.withUsername("admin")
+                .password("12345")
+                .roles("USER")
+                .authorities("admin")
+                .build();
+        UserDetails user = User.withUsername(userConfigData.getUsername())
+                .password(userConfigData.getPassword())
+                .roles(userConfigData.getRoles())
+                //.authorities("read")
+                .build();
+        return new InMemoryUserDetailsManager(admin, user);
+
+    }
+/*    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }*/
+
+ /*   private static final Logger LOG = LoggerFactory.getLogger(WebSecurityConfig.class);
 
     private static final String GROUPS_CLAIM = "groups";
 
@@ -84,6 +155,6 @@ public class WebSecurityConfig {
                     });
             return mappedAuthorities;
         };
-    }
+    }*/
 
 }

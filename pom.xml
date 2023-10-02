@@ -18,10 +18,8 @@
 		<module>elastic-query-service</module>
 		<module>kafka-to-elastic-service</module>
 		<module>elastic-query-service-common</module>
-<!--		<module>elastic-query-service</module>-->
-<!--		<module>elastic-query-web-client</module>-->
-<!--		<module>elastic-query-service-common</module>-->
-<!--		<module>elastic-query-web-client-common</module>-->
+		<module>elastic-query-web-client</module>
+		<module>elastic-query-web-client-common</module>
 
 	</modules>
 
@@ -64,6 +62,7 @@
 		<elastic.version>8.10.2</elastic.version>
 		<jackson-databind.version>2.12.3</jackson-databind.version>
 		<springdoc-openapi-ui.version>1.7.0</springdoc-openapi-ui.version>
+		<tymeleaf-extra-spring-security6.version>3.1.2.RELEASE</tymeleaf-extra-spring-security6.version>
 
 	</properties>
 	<repositories>
@@ -357,11 +356,11 @@
 				<version>${springdoc-openapi-ui.version}</version>
 			</dependency>
 
-			<!-- https://mvnrepository.com/artifact/org.thymeleaf.extras/thymeleaf-extras-springsecurity5 -->
+			<!-- https://mvnrepository.com/artifact/org.thymeleaf.extras/thymeleaf-extras-springsecurity6 -->
 			<dependency>
 				<groupId>org.thymeleaf.extras</groupId>
-				<artifactId>thymeleaf-extras-springsecurity5</artifactId>
-				<version>3.1.2.RELEASE</version>
+				<artifactId>thymeleaf-extras-springsecurity6</artifactId>
+				<version>${tymeleaf-extra-spring-security6.version}</version>
 			</dependency>
 			<!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-loadbalancer -->
 			<dependency>
