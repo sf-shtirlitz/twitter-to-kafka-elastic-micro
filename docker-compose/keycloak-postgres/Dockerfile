@@ -3,8 +3,6 @@ FROM quay.io/keycloak/keycloak:latest as builder
 # Enable health and metrics support
 ENV KC_HEALTH_ENABLED=true
 ENV KC_METRICS_ENABLED=true
-ENV KC_HTTP_ENABLED=true
-ENV KC_HOSTNAME_STRICT=false
 
 # Configure a database vendor
 ENV KC_DB=postgres
@@ -19,8 +17,8 @@ COPY --from=builder /opt/keycloak/ /opt/keycloak/
 
 # change these values to point to a running postgres instance
 ENV KC_DB=postgres
-ENV KC_DB_URL=jdbc:postgresql://localhost/keycloak
-ENV KC_DB_USERNAME=postgres
-ENV KC_DB_PASSWORD=postgres
+ENV KC_DB_URL=jdbc:postgresql://postgres:5432/postgresql?ssl=allow
+ENV KC_DB_USERNAME=keycloak
+ENV KC_DB_PASSWORD=keycloak
 ENV KC_HOSTNAME=localhost
 ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
