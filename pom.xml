@@ -19,6 +19,7 @@
 		<module>kafka-to-elastic-service</module>
 		<module>elastic-query-service-common</module>
 		<module>elastic-query-web-client</module>
+		<module>elastic-query-web-client-2</module>
 		<module>elastic-query-web-client-common</module>
 		<module>reactive-elastic-query-service</module>
 		<module>reactive-elastic-query-web-client</module>
@@ -44,7 +45,7 @@
 		<maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
 		<twitter4j.version>4.0.7</twitter4j.version>
 		<twitter-api-java-sdk.version>1.2.2</twitter-api-java-sdk.version>
-		<lombok.version>1.18.28</lombok.version>
+		<lombok.version>1.18.30</lombok.version>
 		<httpclient.version>4.5.14</httpclient.version>
 		<json.version>20230618</json.version>
 		<jakarta.version>2.1.1</jakarta.version>
@@ -53,7 +54,6 @@
 		<kafka-clients.version>3.3.1</kafka-clients.version>
 		<kafka-avro-serializer.version>7.3.0</kafka-avro-serializer.version>
 		<kafka-streams-avro-serde.version>7.3.0</kafka-streams-avro-serde.version>
-		<!--		<kafka-clients.version>3.3.1</kafka-clients.version>-->
 		<!--		<kafka-clients.version>3.5.1</kafka-clients.version>-->
 		<!--		<spring-kafka.version>3.0.11</spring-kafka.version>-->
 		<spring-retry.version>2.0.3</spring-retry.version>

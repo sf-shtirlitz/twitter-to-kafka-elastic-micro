@@ -13,8 +13,8 @@ services:
     networks:
       - ${GLOBAL_NETWORK:-services}
 
-  keycloak:
-    image: quay.io/keycloak/keycloak:22.0.3
+  keycloak-authorization-server:
+    image: quay.io/keycloak/keycloak:22.0.4
     ports:
       - "8080:8080"
     restart: always
@@ -29,7 +29,7 @@ services:
       - KC_HTTP_ENABLED=true
       - KC_HOSTNAME_STRICT_HTTPS=false
       - DB=keycloak
-      - DB_URL='jdbc:postgresql://postgres:5432/postgresql?ssl=allow'
+      - DB_URL='jdbc:postgresql://postgresql:5432/keycloak?ssl=allow'
       - DB_USERNAME=keycloak
       - DB_PASSWORD=keycloak
       - KEYCLOAK_ADMIN=admin
