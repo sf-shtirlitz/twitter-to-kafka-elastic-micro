@@ -17,5 +17,5 @@ while [[ ! $curlResult == "200" ]]; do
   curlResult=$(curl -s -o /dev/null -I -w "%{http_code}" http://config-server:8888/actuator/health)
 done
 
-/cnb/process/web
-#/cnb/lifecycle/launcher
+check-keycloak-server-started.sh
+#/cnb/process/web
