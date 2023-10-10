@@ -18,7 +18,7 @@ import java.util.List;
 @Controller
 public class QueryController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(QueryController.class);
+/*    private static final Logger LOG = LoggerFactory.getLogger(QueryController.class);
 
     private final ElasticQueryWebClient elasticQueryWebClient;
 
@@ -53,9 +53,9 @@ public class QueryController {
         model.addAttribute("elasticQueryWebClientRequestModel",
                 ElasticQueryWebClientRequestModel.builder().build());
         return "home";
-    }
+    }*/
 
-/*    private static final Logger LOG = LoggerFactory.getLogger(QueryController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(QueryController.class);
 
     private final ElasticQueryWebClient elasticQueryWebClient;
 
@@ -93,6 +93,6 @@ public class QueryController {
         model.addAttribute("elasticQueryWebClientRequestModel",
                 ElasticQueryWebClientRequestModel.builder().build());
         return "home";
-    }*/
+    }
 
 }

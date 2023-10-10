@@ -29,7 +29,7 @@ import static com.microservices.demo.mdc.Constants.CORRELATION_ID_KEY;
 public class TwitterElasticQueryWebClient implements ElasticQueryWebClient {
 
     private static final Logger LOG = LoggerFactory.getLogger(TwitterElasticQueryWebClient.class);
-
+/*
     private final WebClient.Builder webClientBuilder;
 
     private final ElasticQueryWebClientConfigData elasticQueryWebClientConfigData;
@@ -72,9 +72,7 @@ public class TwitterElasticQueryWebClient implements ElasticQueryWebClient {
     private <T> ParameterizedTypeReference<T> createParameterizedTypeReference() {
         return new ParameterizedTypeReference<>() {
         };
-    }
-
-/*    private static final Logger LOG = LoggerFactory.getLogger(TwitterElasticQueryWebClient.class);
+    }*/
 
     private final WebClient.Builder webClientBuilder;
 
@@ -120,5 +118,5 @@ public class TwitterElasticQueryWebClient implements ElasticQueryWebClient {
     private <T> ParameterizedTypeReference<T> createParameterizedTypeReference() {
         return new ParameterizedTypeReference<>() {
         };
-    }*/
+    }
 }

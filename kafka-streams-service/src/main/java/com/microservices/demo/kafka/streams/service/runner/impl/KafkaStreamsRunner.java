@@ -66,6 +66,7 @@ public class KafkaStreamsRunner implements StreamsRunner<String, Long> {
 
         createTopology(twitterAvroModelKStream, serdeConfig);
 
+
         startStreaming(streamsBuilder);
     }
 
