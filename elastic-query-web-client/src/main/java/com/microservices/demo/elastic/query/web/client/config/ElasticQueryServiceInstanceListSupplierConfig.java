@@ -11,7 +11,7 @@ import reactor.core.publisher.Flux;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Configuration
+/*@Configuration
 @Primary
 public class ElasticQueryServiceInstanceListSupplierConfig implements ServiceInstanceListSupplier {
 
@@ -39,4 +39,4 @@ public class ElasticQueryServiceInstanceListSupplierConfig implements ServiceIns
                                         false
                                 )).collect(Collectors.toList()));
     }
-}
+}*/

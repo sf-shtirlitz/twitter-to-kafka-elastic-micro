@@ -1,5 +1,6 @@
 package com.microservices.demo.elastic.query.web.client.api;
 
+import com.microservices.demo.elastic.query.web.client.common.model.ElasticQueryWebClientAnalyticsResponseModel;
 import com.microservices.demo.elastic.query.web.client.common.model.ElasticQueryWebClientRequestModel;
 import com.microservices.demo.elastic.query.web.client.common.model.ElasticQueryWebClientResponseModel;
 import com.microservices.demo.elastic.query.web.client.service.ElasticQueryWebClient;
@@ -16,7 +17,7 @@ import java.util.List;
 @Controller
 public class QueryController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(QueryController.class);
+/*    private static final Logger LOG = LoggerFactory.getLogger(QueryController.class);
 
     private final ElasticQueryWebClient elasticQueryWebClient;
 
@@ -51,9 +52,9 @@ public class QueryController {
         model.addAttribute("elasticQueryWebClientRequestModel",
                 ElasticQueryWebClientRequestModel.builder().build());
         return "home";
-    }
+    }*/
 
-/*    private static final Logger LOG = LoggerFactory.getLogger(QueryController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(QueryController.class);
 
     private final ElasticQueryWebClient elasticQueryWebClient;
 
@@ -91,6 +92,6 @@ public class QueryController {
         model.addAttribute("elasticQueryWebClientRequestModel",
                 ElasticQueryWebClientRequestModel.builder().build());
         return "home";
-    }*/
+    }
 
 }

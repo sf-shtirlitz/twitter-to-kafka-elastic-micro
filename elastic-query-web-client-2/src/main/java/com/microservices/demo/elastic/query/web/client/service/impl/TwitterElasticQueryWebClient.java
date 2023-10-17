@@ -2,11 +2,13 @@ package com.microservices.demo.elastic.query.web.client.service.impl;
 
 import com.microservices.demo.config.ElasticQueryWebClientConfigData;
 import com.microservices.demo.elastic.query.web.client.common.exception.ElasticQueryWebClientException;
+import com.microservices.demo.elastic.query.web.client.common.model.ElasticQueryWebClientAnalyticsResponseModel;
 import com.microservices.demo.elastic.query.web.client.common.model.ElasticQueryWebClientRequestModel;
 import com.microservices.demo.elastic.query.web.client.common.model.ElasticQueryWebClientResponseModel;
 import com.microservices.demo.elastic.query.web.client.service.ElasticQueryWebClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -20,11 +22,14 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
+import static com.microservices.demo.mdc.Constants.CORRELATION_ID_HEADER;
+import static com.microservices.demo.mdc.Constants.CORRELATION_ID_KEY;
+
 @Service
 public class TwitterElasticQueryWebClient implements ElasticQueryWebClient {
 
     private static final Logger LOG = LoggerFactory.getLogger(TwitterElasticQueryWebClient.class);
-
+/*
     private final WebClient.Builder webClientBuilder;
 
     private final ElasticQueryWebClientConfigData elasticQueryWebClientConfigData;
@@ -67,9 +72,7 @@ public class TwitterElasticQueryWebClient implements ElasticQueryWebClient {
     private <T> ParameterizedTypeReference<T> createParameterizedTypeReference() {
         return new ParameterizedTypeReference<>() {
         };
-    }
-
-/*    private static final Logger LOG = LoggerFactory.getLogger(TwitterElasticQueryWebClient.class);
+    }*/
 
     private final WebClient.Builder webClientBuilder;
 
@@ -115,5 +118,5 @@ public class TwitterElasticQueryWebClient implements ElasticQueryWebClient {
     private <T> ParameterizedTypeReference<T> createParameterizedTypeReference() {
         return new ParameterizedTypeReference<>() {
         };
-    }*/
+    }
 }

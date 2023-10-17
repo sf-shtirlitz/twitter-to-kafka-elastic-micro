@@ -1,6 +1,7 @@
 package com.microservices.demo.elastic.query.service.business.impl;
 
 import com.microservices.demo.config.ElasticQueryServiceConfigData;
+import com.microservices.demo.config.ElasticQueryWebClientConfigData;
 import com.microservices.demo.elastic.model.index.impl.TwitterIndexModel;
 import com.microservices.demo.elastic.query.client.service.ElasticQueryClient;
 import com.microservices.demo.elastic.query.service.QueryType;
@@ -104,7 +105,31 @@ public class TwitterElasticQueryService implements ElasticQueryService {
     private ElasticQueryServiceWordCountResponseModel retrieveResponseModel(String text,
                                                                             String accessToken,
                                                                             ElasticQueryServiceConfigData.Query query) {
-        return webClientBuilder
+
+        WebClient webClient = webClientBuilder.build();
+        WebClient.RequestBodyUriSpec uriSpec = webClient.method(HttpMethod.valueOf(query.getMethod()));
+        uriSpec.uri(query.getUri(), uriBuilder -> uriBuilder.build(text));
+        uriSpec.headers(h -> {
+            h.setBearerAuth(accessToken);
+            h.set(CORRELATION_ID_HEADER, MDC.get(CORRELATION_ID_KEY));
+        });
+        uriSpec.accept(MediaType.valueOf(query.getAccept()));
+        ElasticQueryServiceWordCountResponseModel wordCountModel = uriSpec.retrieve()
+                .onStatus(
+                        s -> s.equals(HttpStatus.UNAUTHORIZED),
+                        clientResponse -> Mono.just(new BadCredentialsException("Not authenticated")))
+                .onStatus(
+                        s -> s.equals(HttpStatus.BAD_REQUEST),
+                        clientResponse -> Mono.just(new
+                                ElasticQueryServiceException(clientResponse.statusCode().toString())))
+                .onStatus(
+                        s -> s.equals(HttpStatus.INTERNAL_SERVER_ERROR),
+                        clientResponse -> Mono.just(new Exception(clientResponse.statusCode().toString())))
+                .bodyToMono(ElasticQueryServiceWordCountResponseModel.class)
+                .log()
+                .block();
+
+/*        ElasticQueryServiceWordCountResponseModel wordCountModel = webClientBuilder
                 .build()
                 .method(HttpMethod.valueOf(query.getMethod()))
                 .uri(query.getUri(), uriBuilder -> uriBuilder.build(text))
@@ -126,7 +151,9 @@ public class TwitterElasticQueryService implements ElasticQueryService {
                         clientResponse -> Mono.just(new Exception(clientResponse.statusCode().toString())))
                 .bodyToMono(ElasticQueryServiceWordCountResponseModel.class)
                 .log()
-                .block();
+                .block();*/
+
+        return wordCountModel;
 
     }
 }

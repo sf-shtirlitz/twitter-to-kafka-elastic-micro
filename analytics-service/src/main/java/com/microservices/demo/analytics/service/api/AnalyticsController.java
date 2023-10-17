@@ -29,7 +29,7 @@ public class AnalyticsController {
         this.analyticsService = service;
     }
 
-    @GetMapping("/get-word-count-by-word/{word}")
+    @GetMapping("get-word-count-by-word/{word}")
     @Operation(summary = "Get analytics by word.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success.", content = {
