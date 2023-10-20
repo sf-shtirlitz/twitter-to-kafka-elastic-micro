@@ -9,8 +9,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import static com.microservices.demo.mdc.Constants.CORRELATION_ID_HEADER;
-import static com.microservices.demo.mdc.Constants.CORRELATION_ID_KEY;
+import static com.microservices.demo.mdc.Constants.*;
 
 @Component
 public class MDCHandlerInterceptor implements HandlerInterceptor {
@@ -25,10 +24,16 @@ public class MDCHandlerInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
         String correlationId = request.getHeader(CORRELATION_ID_HEADER);
+        String traceId = request.getHeader(TRACE_ID_HEADER);
         if (StringUtils.hasLength(correlationId)) {
             MDC.put(CORRELATION_ID_KEY, correlationId);
         } else {
             MDC.put(CORRELATION_ID_KEY, getNewCorrelationId());
+        }
+        if (StringUtils.hasLength(traceId)) {
+            MDC.put(TRACE_ID_KEY, traceId);
+        } else {
+            MDC.put(TRACE_ID_KEY, getNewCorrelationId());
         }
         return true;
     }
@@ -37,6 +42,7 @@ public class MDCHandlerInterceptor implements HandlerInterceptor {
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
             throws Exception {
         MDC.remove(CORRELATION_ID_KEY);
+        MDC.remove(TRACE_ID_KEY);
     }
 
     private String getNewCorrelationId() {

@@ -22,8 +22,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-import static com.microservices.demo.mdc.Constants.CORRELATION_ID_HEADER;
-import static com.microservices.demo.mdc.Constants.CORRELATION_ID_KEY;
+import static com.microservices.demo.mdc.Constants.*;
 
 @Service
 public class TwitterElasticQueryWebClient implements ElasticQueryWebClient {
@@ -100,6 +99,7 @@ public class TwitterElasticQueryWebClient implements ElasticQueryWebClient {
                 .uri(elasticQueryWebClientConfigData.getQueryByText().getUri())
                 .accept(MediaType.valueOf(elasticQueryWebClientConfigData.getQueryByText().getAccept()))
                 .header(CORRELATION_ID_HEADER, MDC.get(CORRELATION_ID_KEY))
+                .header(TRACE_ID_HEADER, MDC.get(TRACE_ID_KEY))
                 .body(BodyInserters.fromPublisher(Mono.just(requestModel), createParameterizedTypeReference()))
                 .retrieve()
                 .onStatus(

@@ -25,8 +25,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-import static com.microservices.demo.mdc.Constants.CORRELATION_ID_HEADER;
-import static com.microservices.demo.mdc.Constants.CORRELATION_ID_KEY;
+import static com.microservices.demo.mdc.Constants.*;
 
 @Service
 public class TwitterElasticQueryService implements ElasticQueryService {
@@ -112,6 +111,7 @@ public class TwitterElasticQueryService implements ElasticQueryService {
         uriSpec.headers(h -> {
             h.setBearerAuth(accessToken);
             h.set(CORRELATION_ID_HEADER, MDC.get(CORRELATION_ID_KEY));
+            h.set(TRACE_ID_HEADER, MDC.get(TRACE_ID_KEY));
         });
         uriSpec.accept(MediaType.valueOf(query.getAccept()));
         ElasticQueryServiceWordCountResponseModel wordCountModel = uriSpec.retrieve()

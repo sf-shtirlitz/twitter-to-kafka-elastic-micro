@@ -71,7 +71,7 @@
 		<spring-cloud-starter-zipkin.version>2.2.8.RELEASE</spring-cloud-starter-zipkin.version>
 		<micrometer-registry-prometheus.version>1.11.5</micrometer-registry-prometheus.version>
 		<logstash-logback-encoder.version>7.4</logstash-logback-encoder.version>
-
+		<zipkin-sender-kafka.version>2.16.4</zipkin-sender-kafka.version>
 	</properties>
 	<repositories>
 		<repository>
@@ -168,6 +168,19 @@
 				<artifactId>spring-boot-starter-actuator</artifactId>
 				<version>${spring-boot.version}</version>
 			</dependency>
+			<!-- https://mvnrepository.com/artifact/io.zipkin.reporter2/zipkin-sender-kafka -->
+			<dependency>
+				<groupId>io.zipkin.reporter2</groupId>
+				<artifactId>zipkin-sender-kafka</artifactId>
+				<version>${zipkin-sender-kafka.version}</version>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-zipkin -->
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-starter-zipkin</artifactId>
+				<version>${spring-cloud-starter-zipkin.version}</version>
+			</dependency>
+
 <!--			<dependency>
 				<groupId>io.micrometer</groupId>
 				<artifactId>micrometer-tracing-bridge-brave</artifactId>

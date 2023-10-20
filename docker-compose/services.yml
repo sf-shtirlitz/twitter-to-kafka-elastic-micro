@@ -2,6 +2,7 @@ version: '3.7'
 services:
   config-server:
     image: ${GROUP_ID}/config-server:${SERVICE_VERSION:-latest}
+    restart: always
     ports:
       - "5007:5007"
       - "8888:8888"
@@ -12,7 +13,7 @@ services:
       - "LOG_APP-NAME=config-server"
       - "SERVER_PORT=8888"
       - "ENCRYPT_KEY=${ENCRYPT_KEY}"
-#      - "MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://zipkin:9411"
+      - "MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://zipkin:9411"
     networks:
       - ${GLOBAL_NETWORK:-services}
   config-server-ha:
@@ -27,7 +28,7 @@ services:
       - "LOG_APP-NAME=config-server-ha"
       - "SERVER_PORT=8889"
       - "ENCRYPT_KEY=${ENCRYPT_KEY}"
-#      - "MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://zipkin:9411"
+      - "MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://zipkin:9411"
     networks:
       - ${GLOBAL_NETWORK:-services}
   twitter-to-kafka-service:
@@ -59,8 +60,8 @@ services:
       - "ENCRYPT_KEY=${ENCRYPT_KEY}"
       - "TWITTER_BEARER_TOKEN=${TWITTER_BEARER_TOKEN}"
       - "LOG_APP-NAME=twitter-to-kafka-service"
-#      - "MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://zipkin:9411"
-#      - "SPRING_ZIPKIN_SENDER_TYPE=web"
+      - "MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://zipkin:9411"
+      - "SPRING_ZIPKIN_SENDER_TYPE=web"
 #      - "SPRING_SLEUTH_SAMPLER_PROBABILITY=1.0"
     networks:
       - ${GLOBAL_NETWORK:-services}
@@ -88,9 +89,11 @@ services:
       - "ELASTIC-CONFIG_CONNECTION-URL=elastic-1:9200"
       - "LOG_APP-NAME=kafka-to-elastic-service"
       - "ENCRYPT_KEY=${ENCRYPT_KEY}"
+      - "SPRING_ZIPKIN_SENDER_TYPE=kafka"
       - "SPRING_KAFKA_BOOTSTRAP-SERVERS=kafka-broker-1:9092, kafka-broker-2:9092, kafka-broker-3:9092"
+#      - "SPRING_SLEUTH_SAMPLER_PROBABILITY=1.0"
       - "SPRING_DATA_ELASTICSEARCH_CLIENT_REACTIVE_ENDPOINTS=elastic-1:9200"
-      #- "MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://zipkin:9411"
+      - "MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://zipkin:9411"
     networks:
       - ${GLOBAL_NETWORK:-services}
 
@@ -133,10 +136,10 @@ services:
       - "ELASTIC-QUERY-SERVICE_WEBCLIENT_QUERY-TYPE=KAFKA_STATE_STORE"
       - "ENCRYPT_KEY=${ENCRYPT_KEY}"
       - "EUREKA_CLIENT_SERVICE-URL_DEFAULT-ZONE=http://discovery-service-1:8761/eureka/,http://discovery-service-2:8762/eureka/"
-#      - "SPRING_ZIPKIN_SENDER_TYPE=kafka"
+      - "SPRING_ZIPKIN_SENDER_TYPE=kafka"
 #      - "SPRING_SLEUTH_SAMPLER_PROBABILITY=1.0"
 #      - "SPRING_DATA_ELASTICSEARCH_CLIENT_REACTIVE_ENDPOINTS=elastic-1:9200"
-#      - "MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://zipkin:9411"
+      - "MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://zipkin:9411"
     networks:
       - ${GLOBAL_NETWORK:-services}
 
@@ -179,10 +182,10 @@ services:
       - "ENCRYPT_KEY=${ENCRYPT_KEY}"
       - "SPRING_DATASOURCE_INITIALIZATION-MODE=never"
       - "EUREKA_CLIENT_SERVICE-URL_DEFAULT-ZONE=http://discovery-service-1:8761/eureka/,http://discovery-service-2:8762/eureka/"
-    #      - "SPRING_ZIPKIN_SENDER_TYPE=kafka"
+      - "SPRING_ZIPKIN_SENDER_TYPE=kafka"
     #      - "SPRING_SLEUTH_SAMPLER_PROBABILITY=1.0"
     #      - "SPRING_DATA_ELASTICSEARCH_CLIENT_REACTIVE_ENDPOINTS=elastic-1:9200"
-    #      - "MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://zipkin:9411"
+      - "MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://zipkin:9411"
     networks:
       - ${GLOBAL_NETWORK:-services}
 
@@ -220,6 +223,10 @@ services:
       - "EUREKA_CLIENT_SERVICE-URL_DEFAULT-ZONE=http://discovery-service-1:8761/eureka/,http://discovery-service-2:8762/eureka/"
       - "ENCRYPT_KEY=${ENCRYPT_KEY}"
       - "LOG_APP-NAME=elastic-query-web-client"
+      - "SPRING_ZIPKIN_SENDER_TYPE=kafka"
+      - "SPRING_KAFKA_BOOTSTRAP-SERVERS=kafka-broker-1:9092, kafka-broker-2:9092, kafka-broker-3:9092"
+#      - "SPRING_SLEUTH_SAMPLER_PROBABILITY=1.0"
+      - "MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://zipkin:9411"
     networks:
       - ${GLOBAL_NETWORK:-services}
 
@@ -257,6 +264,10 @@ services:
       - "EUREKA_CLIENT_SERVICE-URL_DEFAULT-ZONE=http://discovery-service-1:8761/eureka/,http://discovery-service-2:8762/eureka/"
       - "ENCRYPT_KEY=${ENCRYPT_KEY}"
       - "LOG_APP-NAME=elastic-query-web-client-2"
+      - "SPRING_ZIPKIN_SENDER_TYPE=kafka"
+      - "SPRING_KAFKA_BOOTSTRAP-SERVERS=kafka-broker-1:9092, kafka-broker-2:9092, kafka-broker-3:9092"
+#      - "SPRING_SLEUTH_SAMPLER_PROBABILITY=1.0"
+      - "MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://zipkin:9411"
     networks:
       - ${GLOBAL_NETWORK:-services}
 
@@ -291,6 +302,10 @@ services:
       - "LOG_APP-NAME=kafka-streams-service"
       - "EUREKA_CLIENT_SERVICE-URL_DEFAULT-ZONE=http://discovery-service-1:8761/eureka/,http://discovery-service-2:8762/eureka/"
       - "ENCRYPT_KEY=${ENCRYPT_KEY}"
+      - "SPRING_ZIPKIN_SENDER_TYPE=kafka"
+      - "SPRING_KAFKA_BOOTSTRAP-SERVERS=kafka-broker-1:9092, kafka-broker-2:9092, kafka-broker-3:9092"
+#      - "SPRING_SLEUTH_SAMPLER_PROBABILITY=1.0"
+      - "MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://zipkin:9411"
     networks:
       - ${GLOBAL_NETWORK:-services}
 
@@ -323,9 +338,10 @@ services:
       - "KAFKA-CONFIG_SCHEMA-REGISTRY-URL=http://schema-registry:8081"
       - "LOG_APP-NAME=analytics-service"
       - "ENCRYPT_KEY=${ENCRYPT_KEY}"
-#      - "SPRING_ZIPKIN_SENDER_TYPE=kafka"
+      - "SPRING_ZIPKIN_SENDER_TYPE=kafka"
+      - "SPRING_KAFKA_BOOTSTRAP-SERVERS=kafka-broker-1:9092, kafka-broker-2:9092, kafka-broker-3:9092"
 #      - "SPRING_SLEUTH_SAMPLER_PROBABILITY=1.0"
-#      - "MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://zipkin:9411"
+      - "MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://zipkin:9411"
       - "EUREKA_CLIENT_SERVICE-URL_DEFAULT-ZONE=http://discovery-service-1:8761/eureka/,http://discovery-service-2:8762/eureka/"
     networks:
       - ${GLOBAL_NETWORK:-services}
@@ -345,7 +361,7 @@ services:
       - "SPRING_PROFILES_ACTIVE=peer1"
       - "EUREKA_INSTANCE_HOSTNAME=discovery-service-1"
       - "LOG_APP-NAME=discovery-service-1"
-#      - "MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://zipkin:9411"
+      - "MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://zipkin:9411"
     networks:
       - ${GLOBAL_NETWORK:-services}
   discovery-service-2:
@@ -363,7 +379,7 @@ services:
       - "SPRING_PROFILES_ACTIVE=peer2"
       - "EUREKA_INSTANCE_HOSTNAME=discovery-service-2"
       - "LOG_APP-NAME=discovery-service-2"
-#      - "MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://zipkin:9411"
+      - "MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://zipkin:9411"
     networks:
       - ${GLOBAL_NETWORK:-services}
 
@@ -393,8 +409,8 @@ services:
       - "ENCRYPT_KEY=${ENCRYPT_KEY}"
       - "SPRING_ZIPKIN_SENDER_TYPE=kafka"
       - "SPRING_KAFKA_BOOTSTRAP-SERVERS=kafka-broker-1:9092, kafka-broker-2:9092, kafka-broker-3:9092"
-      - "SPRING_SLEUTH_SAMPLER_PROBABILITY=1.0"
-#      - "MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://zipkin:9411"
+#      - "SPRING_SLEUTH_SAMPLER_PROBABILITY=1.0"
+      - "MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://zipkin:9411"
     networks:
       - ${GLOBAL_NETWORK:-services}
   gateway-service-2:
@@ -423,7 +439,7 @@ services:
       - "ENCRYPT_KEY=${ENCRYPT_KEY}"
       - "SPRING_ZIPKIN_SENDER_TYPE=kafka"
       - "SPRING_KAFKA_BOOTSTRAP-SERVERS=kafka-broker-1:9092, kafka-broker-2:9092, kafka-broker-3:9092"
-      - "SPRING_SLEUTH_SAMPLER_PROBABILITY=1.0"
-#      - "MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://zipkin:9411"
+#      - "SPRING_SLEUTH_SAMPLER_PROBABILITY=1.0"
+      - "MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://zipkin:9411"
     networks:
       - ${GLOBAL_NETWORK:-services}
